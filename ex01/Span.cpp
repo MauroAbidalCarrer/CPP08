@@ -6,9 +6,9 @@
 #include <vector>
 
 //constructors and destructors
-Span::Span() : capacity(0), currentSize(0) {}
-Span::Span(unsigned int N) : capacity(N) , currentSize(0) {}
-Span::Span(const Span& other) : capacity(0), currentSize(0)
+Span::Span() : capacity(0) {}
+Span::Span(unsigned int N) : capacity(N) {}
+Span::Span(const Span& other) : capacity(0)
 {
     *this = other;
 }
@@ -17,14 +17,13 @@ Span::~Span() {}
 Span& Span::operator=(const Span& rhs)
 {
     capacity = rhs.capacity;
-    currentSize = rhs.currentSize;
     static_cast<std::vector<int>&>(*this) = rhs;
     return *this;
 }
 //methods
 long Span::longestSpan()
 {
-    if (capacity < 2)
+    if (size() < 2)
         throw Span::CantMeasureException();
     std::vector<int>::iterator start = begin();
     std::vector<int>::iterator last = end();
@@ -40,9 +39,9 @@ long safeDiff(int a, int b)
 }
 long Span::shortestSpan()
 {
-    if (capacity < 2)
+    if (size() < 2)
         throw Span::CantMeasureException();
-    long     shortestSpan = INT_MAX;
+    long shortestSpan = (long)INT_MAX - (long)INT_MIN;
     std::vector<int> copiedVector(static_cast<std::vector<int>&>(*this));
     std::sort(copiedVector.begin(), copiedVector.end());
     for (unsigned long i = 0; i < size() - 1; i++)
@@ -57,19 +56,16 @@ long Span::shortestSpan()
 }
 void Span::addNumber(int nb)
 {
-    if (currentSize >= capacity)
+    if (size() >= capacity)
         throw Span::SpanOutOfSpace();
-    currentSize++;
     insert(begin(), nb);
 }
-void Span::addRange(int a, int z)
+void Span::addRange(std::vector<int>::iterator start, std::vector<int>::iterator last)
 {
-	if (size() + z - a >= capacity)
-		throw Span::SpanOutOfSpace();
-	for (int i = a; i <= z; i++)
-		push_back(i);
+    insert(end(), start, last);
+    if (size() > capacity)
+        throw Span::SpanOutOfSpace();
 }
-
 
 const char* Span::CantMeasureException::what() const throw()
 {

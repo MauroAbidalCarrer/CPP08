@@ -5,11 +5,10 @@
 # include <algorithm>
 # include <vector>
 
-class Span : protected std::vector<int>
+class Span : public std::vector<int>
 {
     private:
     unsigned int capacity;
-    size_type currentSize;
 
     public:
     //constructors and destructors
@@ -23,7 +22,7 @@ class Span : protected std::vector<int>
     long shortestSpan();
     long longestSpan();
     void addNumber(int nb);
-    void addRange(int a, int z);
+    void addRange(std::vector<int>::iterator start, std::vector<int>::iterator last);
     //member classes
     class CantMeasureException : public std::exception
     {
