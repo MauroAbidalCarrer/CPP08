@@ -8,7 +8,7 @@
 # include <string>
 # include <cstdlib>
 
-template<typename T> typename T::iterator easyfind(T intContainer, int toFind)
+template<typename T> typename T::iterator easyfind(T & intContainer, int toFind)
 {
     typename T::iterator findRet = find(intContainer.begin(), intContainer.end(), toFind);
     if (findRet == intContainer.end())
